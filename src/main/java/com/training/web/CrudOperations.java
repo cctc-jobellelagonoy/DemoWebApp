@@ -11,23 +11,29 @@ public class CrudOperations {
 	CrudOperations(){
 		userFactoryObj = Persistence.createEntityManagerFactory("JPADemo");
 		entity = userFactoryObj.createEntityManager();
-		entity.getTransaction().begin();
 	}
 	
-	public void insertEntity(String username, String password, String firstname, String lastname, boolean valid) {
+	public void insertUser(String username, String password, String firstname, String lastname, boolean valid) {
 		User s = new User(username, password, firstname, lastname, valid);
+		entity.getTransaction().begin();
 		entity.persist(s);
 		entity.getTransaction().commit();
 	}
 	
-	public User findEntity(String username, String password) {
+	public void insertCourse(String name, int duration, int fee) {
+		Course c = new Course(name, duration, fee);
+		entity.getTransaction().begin();
+		entity.persist(c);
+		entity.getTransaction().commit();
+	}
+	
+	public User findUser(String username, String password) {
 		entity = userFactoryObj.createEntityManager();
 		entity.getTransaction().begin();
 		User user = (User) entity.createQuery("select c from User c where c.username = :un and c.password = :pw")
 				.setParameter("un", username)
 				.setParameter("pw", password)
 			    .getResultList().get(0);
-			    
 		return user;
 	}
 	
@@ -35,7 +41,20 @@ public class CrudOperations {
 		entity = userFactoryObj.createEntityManager();
 		entity.getTransaction().begin();
 		
-		return entity.createQuery("select c from User c")
+		List<User> l =  entity.createQuery("select c from User c")
 			    .getResultList();
+
+		return l;
+	}
+	
+	public List<Course> getCourses() {
+		entity = userFactoryObj.createEntityManager();
+		entity.getTransaction().begin();
+		
+		List<Course> l = entity.createQuery("select c from Course c")
+			    .getResultList();
+
+		return l;
+		
 	}
 }

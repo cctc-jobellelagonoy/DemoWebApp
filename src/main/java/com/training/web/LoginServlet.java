@@ -16,17 +16,17 @@ public class LoginServlet extends HttpServlet {
     public LoginServlet() {
         super();
         op = new CrudOperations();
-        // op.insertEntity("jobelle", "pass123", "Jobelle", "Lagonoy", true);
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = op.findEntity(request.getParameter("un"), request.getParameter("pw"));
+		User user = op.findUser(request.getParameter("un"), request.getParameter("pw"));
 		PrintWriter out = response.getWriter();
 		
 		if(user != null) {
 			request.setAttribute("user", user.getFirstName());
 			request.setAttribute("users", op.getUsers());
-			RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+			request.setAttribute("courses", op.getCourses());
+			RequestDispatcher rd = request.getRequestDispatcher("courses.jsp");
 			rd.forward(request, response);
 		}else {
 			out.println("<html><body>");

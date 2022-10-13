@@ -3,7 +3,7 @@
     
 <%@ page import="java.util.*" %>
 <%@ page import="com.training.web.User" %>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -11,31 +11,13 @@
 </head>
 <body>
 	<h1>Welcome <%= request.getParameter("un") %></h1>
+	
+	Username: <c:out value = "${ param.un }"></c:out>
+	
 	<h2>List of Users</h2>
-	<%
-		List<User> list = (List<User>) request.getAttribute("users");
-	%>
-	<table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for(int i = 0; i < list.size(); i++) {
-                User u =  list.get(i);
-            %>
-            <tr>
-                <td><%=u.getId()%></td>
-                <td><%=u.getFirstName()%></td>
-                <td><%=u.getLastName()%></td>
-               </tr>
-            <%
-            };
-            %>
-        </tbody>
-    </table>
+	<c:forEach items="${ users }" var="u">
+		<p>${u.username}</p>
+	</c:forEach>
+    
 </body>
 </html>
